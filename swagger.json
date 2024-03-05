@@ -1,0 +1,881 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "version": "2.0.2",
+    "title": "Kapu$ta docs",
+    "description": "Showing off swagger-ui-express",
+    "license": {
+      "name": "MIT",
+      "url": "https://opensource.org/licenses/MIT"
+    }
+  },
+  "consumes": ["application/json"],
+  "produces": ["application/json", "url"],
+  "servers": [
+    { "url": "http://localhost:3030/api" },
+    { "url": "https://kapusta-dvde.onrender.com/api" }
+  ],
+  "tags": [
+    {
+      "name": "Auth",
+      "description": "Authorization endpoints"
+    },
+    {
+      "name": "Transactions",
+      "description": "Transactions endpoints"
+    }
+  ],
+  "paths": {
+    "/auth/register": {
+      "post": {
+        "tags": ["Auth"],
+        "summary": "User registration",
+        "parameters": [],
+        "requestBody": {
+          "description": "Registration's object",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RegistrationRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RegistrationResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (invalid request body)"
+          },
+          "409": {
+            "description": "Provided email already exists"
+          }
+        }
+      }
+    },
+    "/auth/login": {
+      "post": {
+        "tags": ["Auth"],
+        "summary": "User login",
+        "parameters": [],
+        "requestBody": {
+          "description": "Registration's object",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LoginResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "email or password is not valid"
+          }
+        }
+      }
+    },
+    "/auth/logout": {
+      "post": {
+        "tags": ["Auth"],
+        "summary": "User logout",
+        "parameters": [],
+        "security": [{ "Bearer": [] }],
+        "responses": {
+          "204": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LogoutResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (invalid request body)"
+          },
+          "409": {
+            "description": "Provided email already exists"
+          }
+        }
+      }
+    },
+    "/auth/users/balance": {
+      "patch": {
+        "tags": ["Auth"],
+        "security": [{ "Bearer": [] }],
+        "summary": "updating the user's balance",
+        "parameters": [],
+        "requestBody": {
+          "description": "Registration's object",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateBalanceRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UpdateBalanceResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (invalid request body)"
+          },
+          "409": {
+            "description": "Provided email already exists"
+          }
+        }
+      }
+    },
+    "/auth/users/current": {
+      "get": {
+        "tags": ["Auth"],
+        "security": [{ "Bearer": [] }],
+        "summary": "receiving a user",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LoginResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No users found"
+          },
+          "401": {
+            "description": "Not authorized"
+          }
+        }
+      }
+    },
+    "/auth/google": {
+      "get": {
+        "tags": ["Auth"],
+        "summary": "User login by google",
+        "responses": {
+          "200": {
+            "description": "URl string with query params consisted of user's email, tokken, balance",
+            "content": {
+              "url": {
+                "schema": {
+                  "$ref": "#/components/schemas/GoogleAuthorization"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "google authorization error"
+          }
+        }
+      }
+    },
+    "/transactions": {
+      "get": {
+        "tags": ["Transactions"],
+        "summary": "Get all user transactions",
+        "parameters": [],
+        "security": [{ "Bearer": [] }],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AllTransactionsResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not authorized"
+          },
+          "404": {
+            "description": "No users found"
+          }
+        }
+      }
+    },
+    "/transactions/expenses": {
+      "post": {
+        "tags": ["Transactions"],
+        "summary": "Add expenses transaction",
+        "parameters": [],
+        "security": [{ "Bearer": [] }],
+        "requestBody": {
+          "description": "Request object",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ExpensesRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExpensesResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "token type is not valid"
+          },
+          "409": {
+            "description": "user not authorized"
+          }
+        }
+      }
+    },
+    "/transactions/income": {
+      "post": {
+        "tags": ["Transactions"],
+        "summary": "Add income transaction",
+        "parameters": [],
+        "security": [{ "Bearer": [] }],
+        "requestBody": {
+          "description": "Request object",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/IncomeRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/IncomeResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (invalid request body)"
+          },
+          "409": {
+            "description": "Provided email already exists"
+          }
+        }
+      }
+    },
+    "/transactions/:transactionId": {
+      "delete": {
+        "tags": ["Transactions"],
+        "summary": "delete transaction",
+        "parameters": [{ "in": "path", "name": "transactionId" }],
+        "security": [{ "Bearer": [] }],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TransactionDeleteResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "no token provided"
+          },
+          "409": {
+            "description": "user not authorized"
+          }
+        }
+      }
+    },
+    "/transactions/incomeMonths": {
+      "post": {
+        "tags": ["Transactions"],
+        "summary": "receiving income for the month",
+        "parameters": [],
+        "security": [{ "Bearer": [] }],
+        "requestBody": {
+          "description": "Request object",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ExpensesMonthsRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExpensesMonthsResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (invalid request body)"
+          },
+          "409": {
+            "description": "Provided email already exists"
+          }
+        }
+      }
+    },
+    "/transactions/expensesMonths": {
+      "post": {
+        "tags": ["Transactions"],
+        "summary": "receiving expenses for the month",
+        "parameters": [],
+        "security": [{ "Bearer": [] }],
+        "requestBody": {
+          "description": "Request object",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ExpensesMonthsRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExpensesMonthsResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (invalid request body)"
+          },
+          "409": {
+            "description": "Provided email already exists"
+          }
+        }
+      }
+    },
+    "/transactions/fullStatistics": {
+      "post": {
+        "tags": ["Transactions"],
+        "summary": "receiving all statistics for the month",
+        "parameters": [],
+        "security": [{ "Bearer": [] }],
+        "requestBody": {
+          "description": "Request object",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FullStatisticsRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "parameters": [],
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FullStatisticsResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (invalid request body)"
+          },
+          "409": {
+            "description": "Provided email already exists"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "RegistrationRequest": {
+        "type": "object",
+        "required": ["email", "password"],
+        "properties": {
+          "email": {
+            "type": "string",
+            "description": "User's email",
+            "format": "email"
+          },
+          "password": {
+            "type": "string",
+            "description": "User's password",
+            "example": "qwerty123"
+          }
+        }
+      },
+      "RegistrationResponse": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "description": "User's email",
+            "format": "email"
+          }
+        }
+      },
+      "LoginRequest": {
+        "type": "object",
+        "required": ["email", "password"],
+        "properties": {
+          "email": {
+            "type": "string",
+            "description": "User's email",
+            "format": "email"
+          },
+          "password": {
+            "type": "string",
+            "description": "User's password",
+            "example": "qwerty123"
+          }
+        }
+      },
+      "LoginResponse": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "description": "User's email",
+            "format": "email"
+          },
+          "balance": {
+            "type": "string",
+            "description": "User's balance",
+            "example": "qwerty123"
+          },
+          "token": {
+            "type": "string",
+            "description": "User's tokken",
+            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzZjY3Zjk1ZmJhNjRiNGRkZGVmOTNjZSIsImlhdCI6MTY3NzEzNzY0MSwiZXhwIjoxNjc3MTczNjQxfQ.Oz4jji9rKghQqZMDEEw97eiYqAvjSBoT09Gn7-REZsM"
+          }
+        }
+      },
+      "LogoutResponse": {
+        "type": "string",
+        "description": "message",
+        "example": "No content"
+      },
+      "UpdateBalanceRequest": {
+        "type": "object",
+        "required": ["balance"],
+        "properties": {
+          "balance": {
+            "type": "integer",
+            "description": "User's balance",
+            "example": "1234"
+          }
+        }
+      },
+      "UpdateBalanceResponse": {
+        "type": "object",
+        "properties": {
+          "newUserBalance": {
+            "type": "string",
+            "description": "User's balance",
+            "example": "1234"
+          }
+        }
+      },
+      "GoogleAuthorization": {
+        "type": "url",
+        "example": "http://example.com/api?email=user@gmail.com&token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzZjY3Zjk1ZmJhNjRiNGRkZGVmOTNjZSIsImlhdCI6MTY3NzEzNzY0MSwiZXhwIjoxNjc3MTczNjQxfQ.Oz4jji9rKghQqZMDEEw97eiYqAvjSBoT09Gn7-REZsM&balance=1234"
+      },
+      "AllTransactionsResponse": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "userId": {
+              "type": "string",
+              "description": "User's id",
+              "example": "11111111111111111111"
+            },
+            "_id": {
+              "type": "string",
+              "description": "Transaction's id",
+              "example": "22222222222222222222"
+            },
+            "dateTransaction": {
+              "type": "date",
+              "description": "Transaction's date",
+              "example": "2020-03-22T21:21:41.052+00:00"
+            },
+            "income": {
+              "type": "boolean",
+              "description": "Transaction's type",
+              "example": "true"
+            },
+            "sum": {
+              "type": "integer",
+              "description": "Transaction's sum",
+              "example": "120"
+            },
+            "category": {
+              "type": "string",
+              "description": "Transaction's category",
+              "example": "products"
+            },
+            "description": {
+              "type": "string",
+              "description": "Transaction's description",
+              "example": "apple"
+            }
+          }
+        }
+      },
+      "ExpensesRequest": {
+        "type": "object",
+        "properties": {
+          "dateTransaction": {
+            "type": "date",
+            "description": "Transaction's date",
+            "example": "2020-03-22T21:21:41.052+00:00"
+          },
+          "income": {
+            "type": "boolean",
+            "description": "Transaction's type",
+            "example": "false"
+          },
+          "sum": {
+            "type": "integer",
+            "description": "Transaction's sum",
+            "example": "120"
+          },
+          "category": {
+            "type": "string",
+            "description": "Transaction's category",
+            "example": "products"
+          },
+          "description": {
+            "type": "string",
+            "description": "Transaction's description",
+            "example": "apple"
+          }
+        }
+      },
+      "ExpensesResponse": {
+        "type": "object",
+        "properties": {
+          "userId": {
+            "type": "string",
+            "description": "User's id",
+            "example": "111111111111111111111111"
+          },
+          "_id": {
+            "type": "string",
+            "description": "Transaction's id",
+            "example": "222222222222222222222222"
+          },
+          "dateTransaction": {
+            "type": "date",
+            "description": "Transaction's date",
+            "example": "2020-03-22T21:21:41.052+00:00"
+          },
+          "income": {
+            "type": "boolean",
+            "description": "Transaction's type",
+            "example": "false"
+          },
+          "sum": {
+            "type": "integer",
+            "description": "Transaction's sum",
+            "example": "120"
+          },
+          "category": {
+            "type": "string",
+            "description": "Transaction's category",
+            "example": "products"
+          },
+          "description": {
+            "type": "string",
+            "description": "Transaction's description",
+            "example": "apple"
+          }
+        }
+      },
+      "IncomeRequest": {
+        "type": "object",
+        "properties": {
+          "dateTransaction": {
+            "type": "date",
+            "description": "Transaction's date",
+            "example": "2020-03-22T21:21:41.052+00:00"
+          },
+          "income": {
+            "type": "boolean",
+            "description": "Transaction's type",
+            "example": "true"
+          },
+          "sum": {
+            "type": "integer",
+            "description": "Transaction's sum",
+            "example": "120"
+          },
+          "category": {
+            "type": "string",
+            "description": "Transaction's category",
+            "example": "products"
+          },
+          "description": {
+            "type": "string",
+            "description": "Transaction's description",
+            "example": "apple"
+          }
+        }
+      },
+      "IncomeResponse": {
+        "type": "object",
+        "properties": {
+          "userId": {
+            "type": "string",
+            "description": "User's id",
+            "example": "111111111111111111111111"
+          },
+          "_id": {
+            "type": "string",
+            "description": "Transaction's id",
+            "example": "222222222222222222222222"
+          },
+          "dateTransaction": {
+            "type": "date",
+            "description": "Transaction's date",
+            "example": "2020-03-22T21:21:41.052+00:00"
+          },
+          "income": {
+            "type": "boolean",
+            "description": "Transaction's type",
+            "example": "true"
+          },
+          "sum": {
+            "type": "integer",
+            "description": "Transaction's sum",
+            "example": "120"
+          },
+          "category": {
+            "type": "string",
+            "description": "Transaction's category",
+            "example": "products"
+          },
+          "description": {
+            "type": "string",
+            "description": "Transaction's description",
+            "example": "apple"
+          }
+        }
+      },
+      "TransactionDeleteResponse": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "example": "The transaction is successfully deleted!"
+          },
+          "userId": {
+            "type": "string",
+            "example": "111111111111111111111111"
+          }
+        }
+      },
+      "ExpensesMonthsRequest": {
+        "type": "object",
+        "properties": {
+          "year": {
+            "type": "string",
+            "example": "2023"
+          },
+          "currentMonth": {
+            "type": "string",
+            "example": "2"
+          },
+          "userId": {
+            "type": "string",
+            "example": "111111111111111111111111"
+          }
+        }
+      },
+      "ExpensesMonthsResponse": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "total": {
+              "type": "integer",
+              "description": "total income transactions per month",
+              "example": "2000"
+            },
+            "month": {
+              "type": "integer",
+              "description": "month",
+              "example": "1"
+            }
+          }
+        }
+      },
+      "FullStatisticsRequest": {
+        "type": "object",
+        "properties": {
+          "year": {
+            "type": "string",
+            "example": "2023"
+          },
+          "currentMonth": {
+            "type": "string",
+            "example": "2"
+          }
+        }
+      },
+      "FullStatisticsResponse": {
+        "type": "object",
+        "properties": {
+          "icome": {
+            "type": "object",
+            "properties": {
+              "totalSum": {
+                "type": "integer",
+                "example": 1800
+              },
+              "categories": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "category": {
+                      "type": "string",
+                      "example": "Clothes"
+                    },
+                    "sum": {
+                      "type": "integer",
+                      "example": "1300"
+                    },
+                    "descriptions": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "description": {
+                            "type": "string",
+                            "example": "bed"
+                          },
+                          "sum": {
+                            "type": "integer",
+                            "example": "500"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "expenses": {
+            "type": "object",
+            "properties": {
+              "totalSum": {
+                "type": "integer",
+                "example": 4500
+              },
+              "categories": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "category": {
+                      "type": "string",
+                      "example": "HomeSpace"
+                    },
+                    "sum": {
+                      "type": "integer",
+                      "example": "300"
+                    },
+                    "descriptions": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "description": {
+                            "type": "string",
+                            "example": "sofa"
+                          },
+                          "sum": {
+                            "type": "integer",
+                            "example": "300"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "Bearer": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  }
+}
