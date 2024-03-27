@@ -5,14 +5,14 @@ const config = {
   port: 465,
   secure: true,
   auth: {
-    user: "kapustat@ukr.net",
+    user: "kapusta-app@ukr.net",
     pass: process.env.IMAP_KEY,
   },
 };
 
 const sendMail = async ({ to, subject, text }) => {
   const email = {
-    from: "kapustat@ukr.net",
+    from: "kapusta-app@ukr.net",
     to,
     subject,
     text,

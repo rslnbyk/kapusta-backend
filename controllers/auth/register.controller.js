@@ -24,7 +24,7 @@ const register = async (req, res, next) => {
     await sendMail({
       to: email,
       subject: "Please confirm your email",
-      text: `Confirm your email: https://kapusta-dvde.onrender.com/api/auth/verify/${verificationToken}`,
+      text: `Confirm your email: http://localhost:3001/api/auth/verify/${verificationToken}`,
     });
     res.status(201).json({
       user: email,

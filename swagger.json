@@ -12,7 +12,7 @@
   "consumes": ["application/json"],
   "produces": ["application/json", "url"],
   "servers": [
-    { "url": "http://localhost:3030/api" },
+    { "url": "http://localhost:3001/api" },
     { "url": "https://kapusta-dvde.onrender.com/api" }
   ],
   "tags": [

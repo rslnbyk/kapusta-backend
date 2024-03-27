@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 const app = require("./app");
 mongoose.set("strictQuery", false);
 
-const { PORT } = process.env;
+const { PORT }  = process.env;
 const { HOST_URI } = process.env;
 
 (async function () {

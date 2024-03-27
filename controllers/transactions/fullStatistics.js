@@ -74,9 +74,6 @@ const fullStatistics = async (req, res, next) => {
   ]);
   console.log("startedRes",startedRes)
   if (startedRes.length === 0) {
-    // return res
-    //   .status(400)
-    //   .json({ message: "There isn`t any income and expenses in this month" });
     return res.status(200).json({ income: {}, expenses: {} });
   }
   let definer = "both";
